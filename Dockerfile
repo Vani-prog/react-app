@@ -1,4 +1,13 @@
-FROM nginx:alpine
+FROM node:18-alpine AS build
+
 WORKDIR /app
-COPY dist /usr/share/nginx/html
-CMD ["React", "react.js"] 
+COPY react-app/package*.json ./
+RUN npm ci
+
+COPY react-app/ .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
