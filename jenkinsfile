@@ -1,0 +1,38 @@
+pipeline{
+      agent any
+      
+      triggers{
+            cron("* * * * *")
+      }
+      environment{
+              $IMAGE_NAME: 'vanireddy2025/react-app',
+              $IMAGE_TAG: 'latest'
+      }
+
+      stages{
+          stage('Checkout'){
+              steps{
+                  branch: 'main'
+                  URL: 'https://github.com/Vani-prog/react-app'
+              }
+          }
+          stage("Build with npm"){
+              steps{
+                    sh ' install npm
+                          run npm build '
+              }
+          }
+          stage("Build docker image'){
+              steps{
+                  sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG'
+              }
+          }
+          stage('Push to docker'){
+              steps{
+                    sh '''
+                        docker push $IMAGE_NAME:$IMAGE_TAG
+                        '''
+              }
+          }
+    }
+}
