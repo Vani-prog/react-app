@@ -5,7 +5,7 @@ pipeline{
             cron("* * * * *")
       }
       environment{
-              $IMAGE_NAME: 'vanireddy2025/react-app',
+              $IMAGE_NAME: 'vanireddy2025/React-app/react-app/src/React.js',
               $IMAGE_TAG: 'latest'
       }
 
