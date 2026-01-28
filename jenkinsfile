@@ -15,8 +15,10 @@ pipeline{
           }
           stage("Build with npm"){
               steps{
-                    sh ' install npm
-                          run npm build '
+                    sh '''
+                         install npm
+                         run npm build 
+                        '''
               }
           }
           stage("Build docker image'){
