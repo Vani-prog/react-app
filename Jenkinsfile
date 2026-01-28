@@ -8,7 +8,6 @@ pipeline {
                     url: 'https://github.com/Vani-prog/react-app'
             }
         }
-
         stage('Install & Build') {
             steps {
                 dir('react-app') {
@@ -19,7 +18,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Build Docker image') {
             steps {
