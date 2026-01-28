@@ -1,39 +1,35 @@
-pipeline{
-      agent any
-      
-      triggers{
-            cron("* * * * *")
-      }
-      
+  triggers{
+        cron("* * * * *")
+  }
+  
 
-      stages{
-          stage('Checkout'){
-              steps{
-                  branch: 'main'
-                  URL: 'https://github.com/Vani-prog/react-app'
-              }
+  stages{
+      stage('Checkout'){
+          steps{
+              branch: 'main'
+              URL: 'https://github.com/Vani-prog/react-app'
           }
-          stage("Build with npm"){
-              steps{
-                    sh '''
-                         install npm
-                         run npm build 
-                        '''
-              }
+      }
+      stage("Build with npm"){
+          steps{
+                sh '''
+                     install npm
+                     run npm build 
+                    '''
           }
-          stage("Build docker image'){
-              steps{
-                  sh 'docker build -t vanireddy2025/react-app:latest'
-              }
+      }
+      stage("Build docker image'){
+          steps{
+              sh 'docker build -t vanireddy2025/react-app:latest'
           }
-          stage('Push to docker'){
-              steps{
-                     withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIALS_ID, username: 'vanireddy2025', password: '@Krishna2025')]) {
-                    sh '''
-                        docker $password | docker login -u $username --password-stdin
-                        docker push vanireddy2025/react-app:latest
-                        '''
-              }
+      }
+      stage('Push to docker'){
+          steps{
+                 withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIALS_ID, username: 'vanireddy2025', password: '@Krishna2025')]) {
+                sh '''
+                    docker $password | docker login -u $username --password-stdin
+                    docker push vanireddy2025/react-app:latest
+                    '''
           }
-    }
+      }
 }
