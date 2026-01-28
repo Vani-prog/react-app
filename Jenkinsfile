@@ -21,16 +21,15 @@ pipeline {
 
         stage('Push to Docker Registry') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhubID',
-                    usernameVariable: 'vanireddy2025',
-                    passwordVariable: '@Krishna2025'
-                )]) {
-                    sh '''
-                      echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                      docker push vani/react-app:latest
-                    '''
-                }
+                        withCredentials([usernamePassword(credentialsId: 'dockerhubID',
+                        usernameVariable: 'vanireddy2025',
+                        passwordVariable: '@Krishna2025')]) {
+                    
+                        sh '''
+                          echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+                        '''
+            }
+
             }
         }
          stage('Build Docker image') {
