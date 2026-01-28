@@ -19,12 +19,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker image') {
-            steps {
-                sh 'docker build -t vani/react-app:latest .'
-            }
-        }
-
         stage('Push to Docker Registry') {
             steps {
                 withCredentials([usernamePassword(
@@ -37,6 +31,11 @@ pipeline {
                       docker push vani/react-app:latest
                     '''
                 }
+            }
+        }
+         stage('Build Docker image') {
+            steps {
+                sh 'docker build -t vani/react-app:latest .'
             }
         }
     }
