@@ -1,12 +1,10 @@
-
-   
 pipeline {
   agent any
   triggers { cron('* * * * *') }
 
   environment {
     IMAGE = "vanireddy2025/react-app"
-    DOCKER_CREDENTIALS_ID = "docker-creds" // 
+    DOCKER_CREDENTIALS_ID = "docker-creds"
   }
 
   stages {
@@ -17,7 +15,7 @@ pipeline {
     }
 
     stage('Install & Build') {
-      agent { docker { image 'node:18' args '--user root:root' } }
+      agent { docker { image "node:18" args "--user root:root" } }
       steps {
         sh 'npm ci'
         sh 'npm run build'
