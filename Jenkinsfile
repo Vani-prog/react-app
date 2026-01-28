@@ -22,7 +22,7 @@ pipeline {
         stage('Push to Docker Registry') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub',
+                    credentialsId: 'dockerhubID',
                     usernameVariable: 'vanireddy2025',
                     passwordVariable: '@Krishna2025'
                 )]) {
