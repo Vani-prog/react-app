@@ -31,7 +31,7 @@ pipeline{
               steps{
                      withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIALS_ID, username: 'vanireddy2025', password: '@Krishna2025')]) {
                     sh '''
-                        docker $password | docker login -u $username --password -stdin
+                        docker $password | docker login -u $username --password-stdin
                         docker push $IMAGE_NAME:$IMAGE_TAG
                         '''
               }
