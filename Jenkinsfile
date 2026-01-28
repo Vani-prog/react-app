@@ -15,12 +15,10 @@ pipeline {
     }
 
     stage('Install & Build') {
-      agent { docker { image "node:18" args "--user root:root" } }
       steps {
         sh 'npm ci'
         sh 'npm run build'
       }
-      post { always { archiveArtifacts artifacts: 'build/**', fingerprint: true } }
     }
 
     stage('Build Docker image') {
