@@ -26,7 +26,7 @@ pipeline {
                         passwordVariable: '@Krishna2025')]) {
                     
                         sh '''
-                          echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+                          echo "@Krishna2025" | docker login -u "vanireddy2025" --password-stdin
                         '''
             }
 
