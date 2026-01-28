@@ -1,52 +1,50 @@
 pipeline {
-  agent any
-  triggers { cron('* * * * *') }
+    agent any
 
-  environment {
-    IMAGE = "vanireddy2025/react-app"
-    DOCKER_CREDENTIALS_ID = "docker-creds"
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        git branch: 'main', url: 'https://github.com/Vani-prog/react-app'
-      }
-    }
-
-    stage('Install & Build') {
-      steps {
-        sh 'npm ci'
-        sh 'npm run build'
-      }
-    }
-
-    stage('Build Docker image') {
-      steps {
-        script {
-          SHORT_COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-          IMAGE_TAG = "${env.IMAGE}:${SHORT_COMMIT}"
-          sh "docker build -t ${IMAGE_TAG} ."
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Vani-prog/react-app'
+            }
         }
-      }
-    }
 
-    stage('Push to Docker Registry') {
-      steps {
-        script {
-          withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, usernameVariable: 'vanireddy2025', passwordVariable: '@Krishna2025')]) {
-            sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-            sh "docker push ${IMAGE_TAG}"
-            sh "docker tag ${IMAGE_TAG} ${env.IMAGE}:latest || true"
-            sh "docker push ${env.IMAGE}:latest || true"
-          }
+        stage('Install & Build') {
+            steps {
+                dir('my-react-app') {
+                    sh '''
+                      npm ci
+                      npm run build
+                    '''
+                }
+            }
         }
-      }
-    }
-  }
 
-  post {
-    success { echo 'Pipeline succeeded' }
-    failure { echo 'Pipeline failed' }
-  }
+        stage('Build Docker image') {
+            steps {
+                sh 'docker build -t vani/react-app:latest .'
+            }
+        }
+
+        stage('Push to Docker Registry') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'vanireddy2025',
+                    passwordVariable: '@Krishna2025'
+                )]) {
+                    sh '''
+                      echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                      docker push vani/react-app:latest
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Pipeline failed'
+        }
+    }
 }
