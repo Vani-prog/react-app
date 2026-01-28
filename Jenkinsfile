@@ -11,7 +11,7 @@ pipeline {
 
         stage('Install & Build') {
             steps {
-                dir('my-react-app') {
+                dir('react-app') {
                     sh '''
                       npm ci
                       npm run build
@@ -19,6 +19,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Build Docker image') {
             steps {
