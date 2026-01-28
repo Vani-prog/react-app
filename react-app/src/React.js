@@ -4,7 +4,7 @@ function React(){
     return(
         <div>
             <h1>React Application with automated pipeline</h1>
-            <p>React+pipeline+Github+Docker+Swarm</p>
+            <p>React+pipeline+Github+Docker+Docker Swarm</p>
         </div>
     );
 }
